@@ -50,7 +50,7 @@ logXi = 3.1
 ray_xill = RayXill(gamma=gamma, alpha=alpha, Ecut=300.,
                    logXi=logXi, spin=spin, incl=inc, xtable_path="xillver-a-Ec5.fits")
 
-phot_rayxill = ray_xill.Run(8, energy, cache=1)
+phot_rayxill = ray_xill.Run(8, energy, cache=0)
 
 line = RayLine(alpha=alpha, Eline=6.4, spin=spin, incl=inc)
 
