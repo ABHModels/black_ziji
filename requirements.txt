@@ -1,0 +1,6 @@
+astropy>=5.2.2
+Cython>=3.0.9
+matplotlib>=3.7.5
+numpy>=1.24.4
+releash>=0.5.1
+setuptools>=56.0.0
