@@ -110,10 +110,12 @@ class RayXill:
         self.transit_data_dict = transit
 
         xillver = Xillver(gamma=self.gamma, Ecut=self.Ecut, logXi=self.logXi, 
-                          Afe=self.logXi, xtable_path=self.xtable_path)
-        xillver.Get()
+                          Afe=self.Afe, xtable_path=self.xtable_path)
+        # xillver.Get()
+        xillver.Get(energy)
 
-        xill_ener = xillver.xill_ener
+
+        # xill_ener = xillver.xill_ener
         xill_spec10 = xillver.xill_spec10
 
         radi_2d = self.transit_data_dict["radi_emitters"]
@@ -126,8 +128,12 @@ class RayXill:
         dS = dSsc_2d.flatten()
         phot_reflec = xill_spec10.flatten()
 
-        phot_out = RayXill_py(
-            rem, garr, cosem, dS, self.alpha, xill_ener, phot_reflec, Npar
-        )
+        # phot_out = RayXill_py(
+        #     rem, garr, cosem, dS, self.alpha, xill_ener, phot_reflec, Npar
+        # )
+        # return RebinSpec(energy, xill_ener, phot_out)
 
-        return RebinSpec(energy, xill_ener, phot_out)
+         
+        return  RayXill_py(
+                    rem, garr, cosem, dS, self.alpha, energy, phot_reflec, Npar
+                )

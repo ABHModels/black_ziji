@@ -31,7 +31,14 @@ def LogPlot(energy, photon, ax, col):
 
     ax.loglog(En, E_F_E / E_F_E[En > eline][0], color=col)
 
+def SavePhot(ener, phot, fname):
+    E0 = ener[:-1]
+    E1 = ener[1:]
 
+    with open(fname, "w") as f:
+        for e0, e1, ph in zip(E0, E1, phot):
+            txt = "%e %e %e\n" % (e0, e1, ph)
+            f.write(txt)
 
 
 
@@ -51,6 +58,9 @@ ray_xill = RayXill(gamma=gamma, alpha=alpha, Ecut=300.,
                    logXi=logXi, spin=spin, incl=inc, xtable_path="xillver-a-Ec5.fits")
 
 phot_rayxill = ray_xill.Run(8, energy, cache=0)
+
+fname = "fullspec.txt"
+SavePhot(energy, phot_rayxill, fname=fname)
 
 line = RayLine(alpha=alpha, Eline=6.4, spin=spin, incl=inc)
 

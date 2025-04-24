@@ -1,6 +1,7 @@
 import sys
 from astropy.io import fits
 import numpy as np
+from bin.conv.rebin_spectrum_wrapper import rebin_spectrum_py as RebinSpec
 
 
 
@@ -17,17 +18,19 @@ class Xillver:
 
         self.Incl = None
         self.xill_ener = None
+        self.xill_spec10_in = None
         self.xill_spec10 = None
         self.file_name = None
 
-    def Get(self):
+    def Get(self, energy):
         self.XillTable_()
+        self.xill_spec10 = np.zeros([10, len(energy)-1])
+        for i in range(10):
+            self.xill_spec10[i,:] = RebinSpec(energy, self.xill_ener, self.xill_spec10_in[i,:])
         xillver_incl = [18.19487, 31.78833, 41.40962, 49.4584, 56.63298, 63.25631, 69.51268, 75.52248, 81.37307, 87.13402]
         self.Incl = np.array(xillver_incl)
 
     def XillTable_(self):
-
-
 
         gamma = self.gamma
         afe = self.Afe
@@ -50,7 +53,9 @@ class Xillver:
             pmax.append(item[-2])
 
         data = hdu[2].data
-        energy_array = np.zeros(len(data))
+        en_max = data[-1][1]
+        energy_array = np.zeros(len(data) + 1)
+        energy_array[-1] = en_max
         for i in range(len(data)):
             energy_array[i] = data[i][0]
 
@@ -131,7 +136,7 @@ class Xillver:
         np.save("data/data_cache/xillver/energy.npy",energy_array)
         np.save(filename + ".npy", xill_spec)
 
-        self.xill_spec10 = xill_spec
+        self.xill_spec10_in = xill_spec
         self.xill_ener = energy_array
 
 
